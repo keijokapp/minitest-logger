@@ -1,0 +1,110 @@
+// Controller.js
+
+var Controller = Class.extend({
+	construct: function() {
+		//
+	}
+});
+
+
+
+//export Controller;
+
+// MVC.js
+
+Function.prototype.eventize = function() {
+	this._eventize = true;
+}
+
+
+
+
+
+
+
+
+
+
+//--------------------
+
+
+import App from './App'
+
+
+App.authController = new Controller({
+	sleep: function() {
+		if(this.state('asleep')) return;
+
+		this.view.sleep();
+		
+		App.unsetEventListener('session-started', 'auhController');
+		App.unsetEventListener('session-started', 'auhController');
+	},
+	
+	wakeup: function() {
+		if(!this.state('asleep')) return;
+		
+		var _this = this;
+		var priv = this._protected;
+
+		App.once('session-started', function(event, o) {
+			_this.sleep();
+			
+			App.once('session-expired', function() {
+				_this.wakeup();
+			}, 'authController');
+			
+			localStorage.setItem('defaultUsername', o.username)
+		}, 'authController');
+		
+		if(!priv.view) {
+			priv.view = View.create({
+				name: 'auth';
+			});
+		}
+		
+		priv.view.delegate('tryAuthenticate', App);
+		
+		return priv.view.wakeup();
+	},
+});
+
+App.authentication.unauthenticatedState = State.create({
+	require: [ 'authenticationController' ]
+	params: {
+		failed: Type.boolean;
+	}
+});
+
+App.State.create('authenticatingState', {
+	exclude: [ 'authenticatedState', 'unauthenticatedState' ],
+	require: [ 'authenticationController' ]
+});
+
+A   pp.Transition.create(Transition('unauthenticated', 'authenticating'), function() {
+	App.Controllers.authenticationController.set('authenticationFailed', false);
+	App.Controllers.authenticationController.set('authenticating', true);
+});
+
+App.Transition.create(Transition('authenticating', 'unauthenticated'), function(arg) {
+	App.Controllers.authenticationController.set('authenticating', false);
+	if(arg.authFailed)
+		App.Controllers.authenticationController.set('authenticationFailed', true);		
+});
+
+App.Promise.then(function() {
+	
+});
+
+App.State.create('logReady', {
+	exclude: [ 'authenticate', 'authenticating' ]
+})
+
+// index.html
+
+
+
+
+
+
+

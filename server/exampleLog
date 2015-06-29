@@ -1,0 +1,11 @@
+
+Name: Minitest
+
+Log.log = function() {
+	YYYY-dd-mm HH:ii Freq Mode RCall RRST SRST SExcange RExchange Comments Op HashChain
+}
+
+Name: GP
+
+YYYY-dd-mm HH:ii Freq Mode RCall RRST SRST Comments Op
+ 

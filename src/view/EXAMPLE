@@ -1,0 +1,80 @@
+vanja.tpl
+
+--->>>
+<html>
+	<meta charset="utf-8" />
+	<link rel="icon" href="{{icon}}" />
+	<title>{{title}}</title>
+	<body>
+		<div for="i in posts">
+			<h1>{{ posts[i].title }}</h1>
+			<div>{{ posts[i].content }}</div>
+		</div>
+		<div for="i in [ { title: 'vanja', content: 'vanja jälle vanglast väljas' } ]">
+			<h1>{{ posts[i].title }}</h1>
+			<div>{{ posts[i].content }}</div>
+		</div>
+		<div for="post of [ { title: 'vanja', content: 'vanja jälle vanglast väljas' } ]">
+			<h1>{{ post.title }}</h1>
+			<div>{{ post.content }}</div>
+		</div>
+	</body>
+</html>
+
+---> transformed to
+
+<html>
+	<meta charset="utf-8" />
+	<link rel="icon" href="{{icon}}" class="binding" />
+	<title class="binding">{{title}}</title>
+	<body>
+		<div for="i in posts" class="loop-binding">
+			<h1>{{ posts[i].title }}</h1>
+			<div>{{ posts[i].content }}</div>
+		</div>
+		<div for="i in [ { title: 'vanja', content: 'vanja jälle vanglast väljas' } ]">
+			<h1>{{ posts[i].title }}</h1>
+			<div>{{ posts[i].content }}</div>
+		</div>
+		<div for="post of [ { title: 'vanja', content: 'vanja jälle vanglast väljas' } ]">
+			<h1>{{ post.title }}</h1>
+			<div>{{ post.content }}</div>
+		</div>
+	</body>
+</html>
+
+
+
+---> View.js
+
+View = Class.extend({
+	construct: function(model) {
+		var e = new DocumentFragment;
+		var el = el.createElement('html');
+		
+		this.element = this.class.element.clone();
+		var bindings = this.element.querySelectorAll('[data-html-binding]');
+		for(var i = 0, l = bindings.length; i < l; i++) {
+			
+			bindings[i].innerHTML = this.class.bindings[i][0]();
+		}
+	}
+})
+
+---> vanja.tpl.js
+ 
+View.extend({
+	
+}, {
+	template: '<html><meta charset="utf-8" /><link rel="icon" data-attr-binding="href" /><title data-html-binding></title><body></body></html>'
+	__View_fragment: null,
+	htmlBindings: [
+		[ function(a0) { return String(a0) }, 'title' ]
+	],
+	dataBindings: [
+		[ function(a0) { return String(a0) }, 'icon' ]
+	]
+})
+
+
+

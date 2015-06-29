@@ -1,0 +1,5 @@
+
+
+var Log = {};
+
+Log.create

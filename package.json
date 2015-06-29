@@ -1,0 +1,20 @@
+{
+  "name": "minitest-logger",
+  "version": "0.0.0",
+  "description": "ES Minitesti ...",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/keijokapp/minitest-logger"
+  },
+  "devDependencies": {
+    "babelify": "latest",
+    "browserify": "latest",
+    "gulp": "latest",
+    "watchify": "latest",
+    "vinyl-source-stream": "latest",
+    "ws": "latest",
+    "sqlite3": "latest",
+    "babel": "latest"
+  }
+}
